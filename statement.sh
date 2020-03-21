@@ -12,7 +12,7 @@ main() {
         return $_ERROR_GDRIVE_NOT_INSTALLED
     fi
 
-    local statement=${1:-StarlingStatement_$(date '+%Y-%m-%d').csv}
+    local statement=${1:-StarlingStatement_$(date '+%Y-%m').csv}
     info statement: \'$statement\'.
     declare -a stats=($(gdrive list --query "name contains '$statement'" --no-header))
     local id=${stats[0]}
@@ -23,7 +23,7 @@ main() {
         return $_ERROR_STATEMENT_NOT_ON_GDRIVE
     fi
 
-    if gdrive download --force $id; then
+    if gdrive download --force $id >&2; then
         statement.pl $statement
     fi
 }
